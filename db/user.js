@@ -16,6 +16,7 @@ const blogSchema = new Schema({
     notification: {
         timeout: Date,
         text: String,
+        createText: Date
     },
     status: {
         type: Boolean,
