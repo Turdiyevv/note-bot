@@ -1,6 +1,7 @@
 const {bot} = require('../index');
 const User = require('../db/user');
-const { numberOption, langOption} = require("../buttons/btn");
+const { numberOption, langOption, menuOption, menuOptionRu} = require("../buttons/btn");
+const {helloText, notWrite, Hints, replyHints, replyAppeal} = require("../texts/text")
 
 const adminNumbers = ["+998916384402", "998916384402"];
 const checkUserAdmin = (phone_number) => {
@@ -13,8 +14,9 @@ const startSession = async (msg, user) => {
         user.admin = checkUserAdmin(user.phone);
         await User.findByIdAndUpdate(user._id, user, {new: true});
         await bot.sendMessage(msg.chat.id, `🔸
-          🇺🇿 
-          🇷🇺 ${user.lang}`
+          🇺🇿 ${helloText.uzAllHello}
+          🇷🇺 ${helloText.ruAllHello}
+          ${user.lang}`
         )
         return bot.sendMessage(chatId, `Tilni tanlang! | Выберите язык!`, langOption);
 }
@@ -40,4 +42,40 @@ const login = async (msg) => {
         return bot.sendMessage(chatId, `Ro'yxatdan o'tishda xatolik yuz berdi: ${error}`);
     }
 }
-module.exports = {login, startSession, register}
+const requestContact = async (msg) => {
+    const chatId = msg.chat.id;
+    if (msg.contact && msg.contact.phone_number){
+        let user = await User.findOne({chatId}).lean();
+        user.phone = msg.contact.phone_number;
+        user.admin = checkUserAdmin(msg.contact.phone_number);
+        user.action = 'lang';
+        await User.findByIdAndUpdate(user._id, user, {new: true});
+        await  bot.sendMessage(msg.chat.id, `✅
+            ☺️ Assalomu alaykum hurmatli ${msg.chat.first_name},${helloText.uzAllHello}!
+            ☺️ Здравствуйте, ${msg.chat.first_name} ${helloText.ruAllHello}!`
+        );
+        await bot.sendMessage(chatId, `Tilni tanlang! | Выберите язык!`, langOption);
+    }
+}
+const requestLang = async (msg, text) => {
+    const chatId = msg.chat.id;
+    let user = await User.findOne({chatId}).lean();
+    if (msg.text === 'Uz' || msg.text === 'Ru'){
+        user.lang = msg.text === 'Uz'? 'Uz': msg.text === 'Ru' ? 'Ru' : user.lang;
+        user.action = 'menu';
+        await User.findByIdAndUpdate(user._id, user, {new: true});
+        await bot.sendMessage(chatId,`${text ? text : ''} ${user.lang ==='Uz' ? '🇺🇿' : user.lang ==='Ru'? '🇷🇺' : 'none'} ${user.lang}
+                ${user.lang ==='Uz' ? Hints.uzHints : user.lang ==='Ru'? Hints.ruHints : 'none'}`,
+            user.lang ==='Uz' ? menuOption : menuOptionRu);
+    }else {
+        await noWrite(msg);
+    }
+}
+const noWrite = async (msg) => {
+    const chatId = msg.chat.id;
+    let user = await User.findOne({chatId}).lean();
+    if (user){
+        return bot.sendMessage(chatId,`${user.lang ==='Uz' ? notWrite.uzNotWrite : notWrite.ruNotWrite}`);
+    }
+}
+module.exports = {login, startSession, register, requestContact, requestLang, noWrite}

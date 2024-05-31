@@ -21,4 +21,52 @@ module.exports = {
             resize_keyboard: true,
         }
     },
+    menuOption: {
+        reply_markup: {
+            keyboard: [
+                [
+                    {text: "Qo’llanma", value: '/question'},
+                    {text: "Murojaat", value: '/connect'},
+                ],
+                [
+                    {text: "Orqaga", callback_data: '/cancel'},
+                ]
+            ],
+            resize_keyboard: true,
+        }
+    },
+    menuOptionRu: {
+        reply_markup: {
+            keyboard: [
+                [
+                    {text: "Подсказки", value: '/question'},
+                    {text: "Обращение", value: '/connect'},
+                ],
+                [
+                    {text: "Назад", callback_data: '/cancel'},
+                ]
+            ],
+            resize_keyboard: true,
+        }
+    },
+    backUz: {
+        reply_markup: {
+            keyboard: [
+                [
+                    {text: "Orqaga", callback_data: '/cancel'},
+                ]
+            ],
+            resize_keyboard: true,
+        }
+    },
+    backRu: {
+        reply_markup: {
+            keyboard: [
+                [
+                    {text: "Назад", callback_data: '/cancel'},
+                ]
+            ],
+            resize_keyboard: true,
+        }
+    },
 }
