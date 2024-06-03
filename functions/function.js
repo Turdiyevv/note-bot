@@ -5,9 +5,17 @@ const {
   langOption,
   menuOption,
   menuOptionRu,
-  pdfBtn,
+  pdfBtn, weatherBtn, backUz, backRu,
 } = require("../buttons/btn");
-const {helloText, notWrite, Hints, replyHints, replyAppeal} = require("../texts/text")
+const {
+    helloText, notWrite, Hints,
+    replyHints, replyAppeal
+} = require("../texts/text")
+
+
+const ytdl = require('ytdl-core');
+const ffmpeg = require('fluent-ffmpeg');
+const fs = require('fs');
 
 const adminNumbers = ["+998916384402", "998916384402"];
 const checkUserAdmin = (phone_number) => {
@@ -84,12 +92,76 @@ const requestLang = async (msg, text) => {
 const toPDF = async (msg) => {
     const chatId = msg.chat.id;
     let user = await User.findOne({ chatId }).lean();
-    if (msg.text === 'PDF_ga' || msg.text === 'В_pdf'){
-        user.lang = msg.text === 'Uz'? 'Uz': msg.text === 'Ru' ? 'Ru' : user.lang;
-        user.action = 'toPdf';
+    if (msg.text === 'PDF'){
         await User.findByIdAndUpdate(user._id, user, {new: true});
         await bot.sendMessage(chatId,`${user.lang ==='Uz' ? '🇺🇿' : user.lang ==='Ru'? '🇷🇺' : 'none'} ${user.lang}
                 ${user.lang ==='Uz' ? Hints.uzHints : user.lang ==='Ru'? Hints.ruHints : 'none'}`,pdfBtn);
+    }else {
+        await noWrite(msg);
+    }
+}
+const weather = async (msg) => {
+    const chatId = msg.chat.id;
+    let user = await User.findOne({ chatId }).lean();
+    if (msg.text === 'Obhavo' || msg.text === 'Погода'){
+        await bot.sendMessage(chatId,`${user.lang ==='Uz' ? '🇺🇿' : user.lang ==='Ru'? '🇷🇺' : 'none'} ${user.lang}
+                ${user.lang ==='Uz' ? Hints.uzHints : user.lang ==='Ru'? Hints.ruHints : 'none'}`,weatherBtn);
+    }else {
+        await noWrite(msg);
+    }
+}
+const download = async (msg) => {
+    const chatId = msg.chat.id;
+    let user = await User.findOne({ chatId }).lean();
+    if (msg.text === 'Vidio_yuklash' || msg.text === 'Скачать_видео'){
+        user.action = 'download';
+        await User.findByIdAndUpdate(user._id, user, {new: true});
+
+        await bot.sendMessage(chatId,`${user.lang ==='Uz' ? '🇺🇿' : user.lang ==='Ru'? '🇷🇺' : 'none'} ${user.lang}
+                ${user.lang ==='Uz' ? Hints.uzHints : user.lang ==='Ru'? Hints.ruHints : 'none'}`,
+            user.lang ==='Uz' ? backUz : user.lang ==='Ru'? backRu : 'none');
+    }else {
+        await noWrite(msg);
+    }
+}
+const downloadStart = async (msg) => {
+    const chatId = msg.chat.id;
+    const text = msg.text;
+    let user = await User.findOne({ chatId }).lean();
+    if (text && ytdl.validateURL(text)){
+        await bot.sendMessage(chatId,`${user.lang ==='Uz' ? '🇺🇿' : user.lang ==='Ru'? '🇷🇺' : 'none'} ${user.lang}
+        start download`, user.lang ==='Uz' ? backUz : user.lang ==='Ru'? backRu : 'none');
+
+        try {
+            const info = await ytdl.getInfo(text);
+            const videoTitle = info.videoDetails.title;
+            const outputFilePath = `${videoTitle}.mp4`;
+
+            const videoStream = ytdl(text, { filter: format => format.container === 'mp4' });
+            videoStream.pipe(fs.createWriteStream(outputFilePath));
+
+            videoStream.on('finish', () => {
+            // Yuborish jarayoni
+                bot.sendMessage(chatId, `Yuklab olingdi, yuborilmoqda...`);
+                bot.sendVideo(chatId, { source: fs.createReadStream(outputFilePath) })
+                .then(() => {
+                console.log(outputFilePath)
+                    // Yuborish muvaffaqiyatli tugaganda
+                    fs.unlinkSync(outputFilePath);
+                    bot.sendMessage(chatId, 'Yuborildi');
+                })
+                .catch(err => {
+                    // Yuborishda xatolik
+                    bot.sendMessage(chatId, `Xatolik: Yuborilmadi - ${err}`);
+                });
+            });
+            // Yuklab olish jarayonida xatolik
+            videoStream.on('error', (err) => {
+                bot.sendMessage(chatId, `Xatolik: Yuklab olishda xatolik - ${err}`);
+            });
+        } catch (error){
+           return bot.sendMessage(chatId, `error link ${error}`);
+        }
     }else {
         await noWrite(msg);
     }
@@ -129,5 +201,5 @@ module.exports = {
   requestLang,
   noWrite,
   Back,
-  toPDF
+  toPDF,weather, download, downloadStart
 };

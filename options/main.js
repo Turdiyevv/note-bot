@@ -7,8 +7,13 @@ const {
   requestContact,
   requestLang,
   Back,
-  toPDF,
+  toPDF, weather, download, downloadStart
 } = require("../functions/function");
+
+
+const ytdl = require('ytdl-core');
+const ffmpeg = require('fluent-ffmpeg');
+const fs = require('fs');
 
 const bootstrap = () => {
     bot.setMyCommands (
@@ -51,11 +56,43 @@ const bootstrap = () => {
                 await login(msg);
               }
             }
-            else if (text === "PDF_ga" || text === "В_pdf") {
+            else if (text === "PDF") {
               if (user && user.phone) {
-                console.log(user.action);
                 if (user.action === "menu") {
                   await toPDF(msg);
+                } else {
+                  await startSession(msg, user);
+                }
+              } else {
+                await login(msg);
+              }
+            }
+            else if (text === "Obhavo" || text === "Погода") {
+              if (user && user.phone) {
+                if (user.action === "menu") {
+                  await weather(msg);
+                } else {
+                  await startSession(msg, user);
+                }
+              } else {
+                await login(msg);
+              }
+            }
+            else if (text === "Vidio_yuklash" || text === "Скачать_видео") {
+              if (user && user.phone) {
+                if (user.action === "menu") {
+                  await download(msg);
+                } else {
+                  await startSession(msg, user);
+                }
+              } else {
+                await login(msg);
+              }
+            }
+            else if (text && ytdl.validateURL(text)) {
+              if (user && user.phone) {
+                if (user.action === "download") {
+                  await downloadStart(msg);
                 } else {
                   await startSession(msg, user);
                 }
