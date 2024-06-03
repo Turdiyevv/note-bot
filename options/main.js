@@ -1,6 +1,14 @@
 const {bot} = require("../index");
 const User = require("../db/user")
-const {startSession, register, login, requestContact, requestLang} = require("../functions/function");
+const {
+  startSession,
+  register,
+  login,
+  requestContact,
+  requestLang,
+  Back,
+  toPDF,
+} = require("../functions/function");
 
 const bootstrap = () => {
     bot.setMyCommands (
@@ -32,30 +40,52 @@ const bootstrap = () => {
                     await login(msg);
                 }
             }
-            else if (text === "Uz" || text === "Ru"){
-                if (user && user.phone){
-                    if (user.action === 'lang'){
-                        await requestLang(msg);
-                    } else {
-                        await register(msg);
-                    }
-                }else {
-                    await login(msg);
+            else if (text === "Uz" || text === "Ru") {
+              if (user && user.phone) {
+                if (user.action === "lang") {
+                  await requestLang(msg);
+                } else {
+                  await startSession(msg, user);
                 }
+              } else {
+                await login(msg);
+              }
             }
-            else if (contact){
-                if (user){
-                    if (user.action === 'appeal'){
-                        await sendContact(msg, contact);
-                    }
-                    else if(user.action === 'request_contact' && !user.phone) {
-                        return requestContact(msg);
-                    }else {
-                        await requestLang(msg, '⚠️')
-                    }
-                }else {
-                    await login(msg)
+            else if (text === "PDF_ga" || text === "В_pdf") {
+              if (user && user.phone) {
+                console.log(user.action);
+                if (user.action === "menu") {
+                  await toPDF(msg);
+                } else {
+                  await startSession(msg, user);
                 }
+              } else {
+                await login(msg);
+              }
+            }
+
+
+
+            
+            else if (text === "Orqaga" || text === "Назад") {
+              if (user) {
+                return Back(msg);
+              } else {
+                await login(msg);
+              }
+            }
+            else if (contact) {
+              if (user) {
+                if (user.action === "appeal") {
+                  await sendContact(msg, contact);
+                } else if (user.action === "request_contact" && !user.phone) {
+                  return requestContact(msg);
+                } else {
+                  await requestLang(msg, "⚠️");
+                }
+              } else {
+                await login(msg);
+              }
             }
         }
     })

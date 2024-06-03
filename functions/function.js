@@ -1,6 +1,12 @@
 const {bot} = require('../index');
 const User = require('../db/user');
-const { numberOption, langOption, menuOption, menuOptionRu} = require("../buttons/btn");
+const {
+  numberOption,
+  langOption,
+  menuOption,
+  menuOptionRu,
+  pdfBtn,
+} = require("../buttons/btn");
 const {helloText, notWrite, Hints, replyHints, replyAppeal} = require("../texts/text")
 
 const adminNumbers = ["+998916384402", "998916384402"];
@@ -13,12 +19,14 @@ const startSession = async (msg, user) => {
         user.action = 'lang';
         user.admin = checkUserAdmin(user.phone);
         await User.findByIdAndUpdate(user._id, user, {new: true});
-        await bot.sendMessage(msg.chat.id, `🔸
+        await bot.sendMessage(
+          chatId,
+          `🔸
           🇺🇿 ${helloText.uzAllHello}
           🇷🇺 ${helloText.ruAllHello}
-          ${user.lang}`
-        )
-        return bot.sendMessage(chatId, `Tilni tanlang! | Выберите язык!`, langOption);
+          ${user.lang}`,
+          langOption
+        );
 }
 const register = async (msg) => {
     const chatId = msg.chat.id;
@@ -65,12 +73,29 @@ const requestLang = async (msg, text) => {
         user.action = 'menu';
         await User.findByIdAndUpdate(user._id, user, {new: true});
         await bot.sendMessage(chatId,`${text ? text : ''} ${user.lang ==='Uz' ? '🇺🇿' : user.lang ==='Ru'? '🇷🇺' : 'none'} ${user.lang}
-                ${user.lang ==='Uz' ? Hints.uzHints : user.lang ==='Ru'? Hints.ruHints : 'none'}`,
+                ${user.lang ==='Uz' ? Hints.uzHints : user.lang ==='Ru'? Hints.ruHints : 'none'},
+                ${user.lang ==='Uz' ? replyHints.uzReply : user.lang ==='Ru'? replyHints.ruReply : 'none'},
+                ${user.lang ==='Uz' ? replyAppeal.uzAppeal : user.lang ==='Ru'? replyAppeal.ruAppeal : 'none'}`,
             user.lang ==='Uz' ? menuOption : menuOptionRu);
     }else {
         await noWrite(msg);
     }
 }
+const toPDF = async (msg) => {
+    const chatId = msg.chat.id;
+    let user = await User.findOne({ chatId }).lean();
+    if (msg.text === 'PDF_ga' || msg.text === 'В_pdf'){
+        user.lang = msg.text === 'Uz'? 'Uz': msg.text === 'Ru' ? 'Ru' : user.lang;
+        user.action = 'toPdf';
+        await User.findByIdAndUpdate(user._id, user, {new: true});
+        await bot.sendMessage(chatId,`${user.lang ==='Uz' ? '🇺🇿' : user.lang ==='Ru'? '🇷🇺' : 'none'} ${user.lang}
+                ${user.lang ==='Uz' ? Hints.uzHints : user.lang ==='Ru'? Hints.ruHints : 'none'}`,pdfBtn);
+    }else {
+        await noWrite(msg);
+    }
+}
+
+
 const noWrite = async (msg) => {
     const chatId = msg.chat.id;
     let user = await User.findOne({chatId}).lean();
@@ -78,4 +103,31 @@ const noWrite = async (msg) => {
         return bot.sendMessage(chatId,`${user.lang ==='Uz' ? notWrite.uzNotWrite : notWrite.ruNotWrite}`);
     }
 }
-module.exports = {login, startSession, register, requestContact, requestLang, noWrite}
+const Back = async (msg) => {
+  const chatId = msg.chat.id;
+  let user = await User.findOne({ chatId }).lean();
+  if (user.action === "menu") {
+    user.action = "lang";
+    user.lang = "";
+    await User.findByIdAndUpdate(user._id, user, { new: true });
+    await bot.sendMessage(chatId, `🔙 ${msg.text}`, langOption);
+  } else {
+    user.action = "menu";
+    await User.findByIdAndUpdate(user._id, user, { new: true });
+    await bot.sendMessage(
+      chatId,
+      `🔙 ${msg.text}`,
+      user.lang === "Uz" ? menuOption : menuOptionRu
+    );
+  }
+};
+module.exports = {
+  login,
+  startSession,
+  register,
+  requestContact,
+  requestLang,
+  noWrite,
+  Back,
+  toPDF
+};

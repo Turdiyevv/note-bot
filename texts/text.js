@@ -1,8 +1,8 @@
 const helloText = {
-    uzAllHello: `Sizni foydalanuvchilarimizni qo’llab quvvatlash botimizda ko'rib turganimizdan xursandmiz! Maqbul tilni tanlang.`,
-    ruAllHello: `Мы рады видеть вас в нашем специальном боте для поддержки наших пользователей! Выберите подходящий язык.`,
-    // enAllHello: `We are glad to see you in our special bot to support our users! Choose language.`
-}
+  uzAllHello: `Sizni botimizda ko'rib turganimizdan xursandmiz! Maqbul tilni tanlang.`,
+  ruAllHello: `Мы рады видеть вас в нашем боте! Выберите оптимальный язык.`,
+  // enAllHello: `We are glad to see you in our special bot to support our users! Choose language.`
+};
 const Hints = {
     uzHints: "🔹Bizda eng ko'p beriladigan savollarga tayyor javoblar bor, siz “Qo’llanma” havolasini bosish orqali o'qishingiz mumkin",
     ruHints: "🔹Мы ответили на наиболее часто задаваемые вопросы, с которыми вы можете ознакомиться, перейдя по ссылке на “Подсказки”.",
