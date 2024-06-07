@@ -7,7 +7,7 @@ const {
   requestContact,
   requestLang,
   Back,
-  toPDF, weather, download, downloadStart
+  toPDF, weather, download, downloadStart, notes, noteSec
 } = require("../functions/function");
 
 
@@ -22,6 +22,11 @@ const bootstrap = () => {
             {command: "/admin", description: 'Only for administrator'},
         ]).then (() =>{} )
 
+//     bot.on('sticker', (msg) => {
+//     const chatId = msg.chat.id;
+//     const stickerFileId = msg.sticker.file_id;
+//     console.log('Stiker file_id:', stickerFileId);
+// });
     bot.on('message', async msg => {
         if (msg.chat.type === 'private') {
             const chatId = msg.chat.id;
@@ -56,7 +61,7 @@ const bootstrap = () => {
                 await login(msg);
               }
             }
-            else if (text === "PDF") {
+            else if (text === "📄PDF") {
               if (user && user.phone) {
                 if (user.action === "menu") {
                   await toPDF(msg);
@@ -67,7 +72,7 @@ const bootstrap = () => {
                 await login(msg);
               }
             }
-            else if (text === "Obhavo" || text === "Погода") {
+            else if (text === "⛅️Obhavo" || text === "⛅️Погода") {
               if (user && user.phone) {
                 if (user.action === "menu") {
                   await weather(msg);
@@ -78,7 +83,7 @@ const bootstrap = () => {
                 await login(msg);
               }
             }
-            else if (text === "Vidio_yuklash" || text === "Скачать_видео") {
+            else if (text === "🎞Vidio_yuklash" || text === "🎞Скачать_видео") {
               if (user && user.phone) {
                 if (user.action === "menu") {
                   await download(msg);
@@ -100,10 +105,28 @@ const bootstrap = () => {
                 await login(msg);
               }
             }
+            else if (text === "🗒Eslatmalar" || text === "🗒Примечания") {
+              if (user && user.phone) {
+                if (user.action === "menu") {
+                  await notes(msg);
+                } else {
+                  await startSession(msg, user);
+                }
+              } else {
+                await login(msg);
+              }
+            }
+            else if (text && user && user.action === 'write-note') {
+              if (user.phone) {
+                  await noteSec(msg)
+              } else {
+                await login(msg);
+              }
+            }
 
 
 
-            
+
             else if (text === "Orqaga" || text === "Назад") {
               if (user) {
                 return Back(msg);

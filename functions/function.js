@@ -9,7 +9,8 @@ const {
 } = require("../buttons/btn");
 const {
     helloText, notWrite, Hints,
-    replyHints, replyAppeal
+    replyHints, replyAppeal, notesText,
+    writeNoteText
 } = require("../texts/text")
 
 
@@ -81,9 +82,9 @@ const requestLang = async (msg, text) => {
         user.action = 'menu';
         await User.findByIdAndUpdate(user._id, user, {new: true});
         await bot.sendMessage(chatId,`${text ? text : ''} ${user.lang ==='Uz' ? '🇺🇿' : user.lang ==='Ru'? '🇷🇺' : 'none'} ${user.lang}
-                ${user.lang ==='Uz' ? Hints.uzHints : user.lang ==='Ru'? Hints.ruHints : 'none'},
-                ${user.lang ==='Uz' ? replyHints.uzReply : user.lang ==='Ru'? replyHints.ruReply : 'none'},
-                ${user.lang ==='Uz' ? replyAppeal.uzAppeal : user.lang ==='Ru'? replyAppeal.ruAppeal : 'none'}`,
+                ${user.lang ==='Uz' ? Hints.uzHints : user.lang ==='Ru'? Hints.ruHints : 'none'}
+                
+                ${user.lang ==='Uz' ? replyHints.uzReply : user.lang ==='Ru'? replyHints.ruReply : 'none'}`,
             user.lang ==='Uz' ? menuOption : menuOptionRu);
     }else {
         await noWrite(msg);
@@ -92,7 +93,7 @@ const requestLang = async (msg, text) => {
 const toPDF = async (msg) => {
     const chatId = msg.chat.id;
     let user = await User.findOne({ chatId }).lean();
-    if (msg.text === 'PDF'){
+    if (msg.text === '📄PDF'){
         await User.findByIdAndUpdate(user._id, user, {new: true});
         await bot.sendMessage(chatId,`${user.lang ==='Uz' ? '🇺🇿' : user.lang ==='Ru'? '🇷🇺' : 'none'} ${user.lang}
                 ${user.lang ==='Uz' ? Hints.uzHints : user.lang ==='Ru'? Hints.ruHints : 'none'}`,pdfBtn);
@@ -103,17 +104,41 @@ const toPDF = async (msg) => {
 const weather = async (msg) => {
     const chatId = msg.chat.id;
     let user = await User.findOne({ chatId }).lean();
-    if (msg.text === 'Obhavo' || msg.text === 'Погода'){
+    if (msg.text === '⛅️Obhavo' || msg.text === '⛅️Погода'){
         await bot.sendMessage(chatId,`${user.lang ==='Uz' ? '🇺🇿' : user.lang ==='Ru'? '🇷🇺' : 'none'} ${user.lang}
                 ${user.lang ==='Uz' ? Hints.uzHints : user.lang ==='Ru'? Hints.ruHints : 'none'}`,weatherBtn);
     }else {
         await noWrite(msg);
     }
 }
+const notes = async (msg) => {
+    const chatId = msg.chat.id;
+    let user = await User.findOne({ chatId }).lean();
+    if (msg.text === '🗒Eslatmalar' || msg.text === '🗒Примечания'){
+        user.action = 'write-note'
+        const stickerFileId = 'CAACAgIAAxkBAAIEGGZjW8qwxYKKu4vzaHGRUQgacCCyAAKeAAPBnGAM3ba7tFYuCMk1BA'
+        await bot.sendSticker(chatId,`${stickerFileId}`);
+        await bot.sendMessage(chatId,`${user.lang ==='Uz' ? '🇺🇿' : user.lang ==='Ru'? '🇷🇺' : 'none'} ${user.lang}
+                ${user.lang ==='Uz' ? writeNoteText.uzText : user.lang ==='Ru'? writeNoteText.ruText : 'none'}`,
+                              user.lang ==='Uz' ? backUz : user.lang ==='Ru'? backRu : 'none');
+    }else {
+        await noWrite(msg);
+    }
+}
+const noteSec = async (msg) => {
+    const chatId = msg.chat.id;
+    let user = await User.findOne({ chatId }).lean();
+    if (msg.text){
+        alert(text)
+    }
+}
+
+
+// download
 const download = async (msg) => {
     const chatId = msg.chat.id;
     let user = await User.findOne({ chatId }).lean();
-    if (msg.text === 'Vidio_yuklash' || msg.text === 'Скачать_видео'){
+    if (msg.text === '🎞Vidio_yuklash' || msg.text === '🎞Скачать_видео'){
         user.action = 'download';
         await User.findByIdAndUpdate(user._id, user, {new: true});
 
@@ -201,5 +226,5 @@ module.exports = {
   requestLang,
   noWrite,
   Back,
-  toPDF,weather, download, downloadStart
+  toPDF,weather, download, downloadStart, notes, noteSec
 };

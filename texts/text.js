@@ -4,15 +4,33 @@ const helloText = {
   // enAllHello: `We are glad to see you in our special bot to support our users! Choose language.`
 };
 const Hints = {
-    uzHints: "🔹Bizda eng ko'p beriladigan savollarga tayyor javoblar bor, siz “Qo’llanma” havolasini bosish orqali o'qishingiz mumkin",
-    ruHints: "🔹Мы ответили на наиболее часто задаваемые вопросы, с которыми вы можете ознакомиться, перейдя по ссылке на “Подсказки”.",
-    enHints: "We have answered the most frequently asked questions, which you can read by clicking on the link to Hints",
+    uzHints: "🔹 Bu bot bir nechta funksiyalarga ega bot hisoblanadi. Menudagi zarur bo'limni tanlab foydalanishingiz mumkin !",
+    ruHints: "🔹 Этот бот считается ботом с несколькими функциями. Вы можете использовать его, выбрав нужный раздел в меню !",
+    enHints: "🔹 This bot is a bot with several functions. You can use it by selecting the required section in the menu !",
 }
 const replyHints = {
-    uzReply: "🔹Agar savolingizga javob topa olmagan bo'lsangiz, biz bilan bog'laning. Biz savollarga ular qabul qilingan tartibda javob beramiz.",
-    ruReply: "🔹Если вы не нашли там ответа на свой вопрос, то напишите нам. Мы отвечаем на вопросы в порядке поступления.",
+    uzReply: "🔸 Hujjatlar bilan ishlash. " +
+        "🔸 Kerakli ma'lumotlarni saqlab qo'yish. " +
+        "🔸 Instagramdan vidio yuklash. " +
+        "🔸 Ob-havo ma'lumotlari.",
+    ruReply: "🔸 Работа с документами." +
+        "🔸 Сохранить необходимые данные" +
+        "🔸 Загрузка видео из Instagram." +
+        "🔸Прогноз погоды.",
     // enReply: "If you didn't find the answer to your question there, please contact us. We answer questions in the order in which they are received."
 }
+
+const notesText = {
+    uzText: "🗒 Bu yerda siz zaruriy eslatmalarni saqlab qo'yishingiz va sizga kerakli vaqtda bildirishnoma yuborilishini sozlashingiz mumkin.",
+    ruText: "🗒 Здесь вы можете сохранить необходимые напоминания и настроить отправку уведомлений в нужное время.",
+    // enText: " Dear user, for a quick solution to your problem, please write your account number from Plum application."
+}
+const writeNoteText = {
+    uzText: "Eslatma xabarlarni yuboring!",
+    ruText: "Отправляйте напоминания!",
+    // enText: " Dear user, for a quick solution to your problem, please write your account number from Plum application."
+}
+
 const replyAppeal = {
     uzAppeal: "🔹 Hurmatli mijoz, muammoingizni tez hal etish uchun Plumdagi akkaunt raqamingizni yozishingizni so'raymiz.",
     ruAppeal: "🔹 Уважаемый клиент для быстрого решение вашей проблемы просим Вас написать номер Вашего аккаунта от Plum.",
@@ -45,4 +63,6 @@ const notAdmin = {
         "⚠️Этo команда доступнo только для администратора!" +
         "👉 /start"
 }
-module.exports = { helloText, notWrite, notAdmin, write,doneWrite, Hints, replyHints, replyAppeal}
+module.exports = { helloText, notWrite, notAdmin,
+    write,doneWrite, Hints, replyHints, replyAppeal,
+    notesText, writeNoteText}

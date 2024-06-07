@@ -20,8 +20,8 @@ module.exports = {
   menuOption: {
     reply_markup: {
       keyboard: [
-        [{ text: "PDF" }, { text: "Eslatmalar" }],
-        [{ text: "Vidio_yuklash" }, { text: "Obhavo" }],
+        [{ text: "📄PDF" }, { text: "🗒Eslatmalar" }],
+        [{ text: "🎞Vidio_yuklash" }, { text: "⛅️Obhavo" }],
         [{ text: "Orqaga", callback_data: "/cancel" }],
       ],
       resize_keyboard: true,
@@ -30,8 +30,8 @@ module.exports = {
   menuOptionRu: {
     reply_markup: {
       keyboard: [
-        [{ text: "PDF" }, { text: "Примечания" }],
-        [{ text: "Скачать_видео" }, { text: "Погода" }],
+        [{ text: "📄PDF" }, { text: "🗒Примечания" }],
+        [{ text: "🎞Скачать_видео" }, { text: "⛅️Погода" }],
         [{ text: "Назад", callback_data: "/cancel" }],
       ],
       resize_keyboard: true,
