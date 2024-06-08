@@ -7,7 +7,7 @@ const {
   requestContact,
   requestLang,
   Back,
-  toPDF, weather, download, downloadStart, notes, noteSec
+  toPDF, weather, download, downloadStart, notes, noteSec, allNotes
 } = require("../functions/function");
 
 
@@ -116,8 +116,26 @@ const bootstrap = () => {
                 await login(msg);
               }
             }
-            else if (text && user && user.action === 'write-note') {
-              if (user.phone) {
+            else if (text === "📜Barchasi" || text === "📜Все") {
+              if (user && user.phone) {
+                if (user.action === "write-note") {
+                  await allNotes(msg);
+                } else {
+                  await startSession(msg, user);
+                }
+              } else {
+                await login(msg);
+              }
+            }
+            else if (text === "Orqaga" || text === "Назад") {
+              if (user) {
+                return Back(msg);
+              } else {
+                await login(msg);
+              }
+            }
+            else if (text) {
+              if (user && user.phone) {
                   await noteSec(msg)
               } else {
                 await login(msg);
@@ -127,13 +145,7 @@ const bootstrap = () => {
 
 
 
-            else if (text === "Orqaga" || text === "Назад") {
-              if (user) {
-                return Back(msg);
-              } else {
-                await login(msg);
-              }
-            }
+
             else if (contact) {
               if (user) {
                 if (user.action === "appeal") {

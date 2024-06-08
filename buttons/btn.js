@@ -49,6 +49,24 @@ module.exports = {
       resize_keyboard: true,
     },
   },
+  backNoteRUz: {
+    reply_markup: {
+      keyboard: [[
+          { text: "Orqaga", callback_data: "/cancel" },
+          { text: "📜Barchasi", callback_data: "/cancel" }
+      ]],
+      resize_keyboard: true,
+    },
+  },
+  backNoteRu: {
+    reply_markup: {
+      keyboard: [[
+          { text: "Назад", callback_data: "/cancel" },
+          { text: "📜Все", callback_data: "/cancel" }
+      ]],
+      resize_keyboard: true,
+    },
+  },
   pdfBtn: {
     reply_markup: {
       inline_keyboard: [
@@ -57,6 +75,24 @@ module.exports = {
             text: "PDF",
             url: "https://www.ilovepdf.com",
           },
+        ],
+      ],
+    },
+  },
+  noteBtnUz: {
+    reply_markup: {
+      inline_keyboard: [
+        [
+          {text: "O'chirish", callback_data: `delete`},
+        ],
+      ],
+    },
+  },
+  noteBtnRu: {
+    reply_markup: {
+      inline_keyboard: [
+        [
+          {text: "Удалить", callback_data: `delete`},
         ],
       ],
     },

@@ -5,7 +5,7 @@ const {
   langOption,
   menuOption,
   menuOptionRu,
-  pdfBtn, weatherBtn, backUz, backRu,
+  pdfBtn, weatherBtn, backUz, backRu, noteBtnUz, noteBtnRu, backNoteRUz, backNoteRu,
 } = require("../buttons/btn");
 const {
     helloText, notWrite, Hints,
@@ -115,21 +115,47 @@ const notes = async (msg) => {
     const chatId = msg.chat.id;
     let user = await User.findOne({ chatId }).lean();
     if (msg.text === '🗒Eslatmalar' || msg.text === '🗒Примечания'){
-        user.action = 'write-note'
-        const stickerFileId = 'CAACAgIAAxkBAAIEGGZjW8qwxYKKu4vzaHGRUQgacCCyAAKeAAPBnGAM3ba7tFYuCMk1BA'
+        user.action = 'write-note';
+        await User.findByIdAndUpdate(user._id, user, {new: true});
+        const stickerFileId = 'CAACAgIAAxkBAAIEGGZjW8qwxYKKu4vzaHGRUQgacCCyAAKeAAPBnGAM3ba7tFYuCMk1BA';
         await bot.sendSticker(chatId,`${stickerFileId}`);
         await bot.sendMessage(chatId,`${user.lang ==='Uz' ? '🇺🇿' : user.lang ==='Ru'? '🇷🇺' : 'none'} ${user.lang}
                 ${user.lang ==='Uz' ? writeNoteText.uzText : user.lang ==='Ru'? writeNoteText.ruText : 'none'}`,
-                              user.lang ==='Uz' ? backUz : user.lang ==='Ru'? backRu : 'none');
+                              user.lang ==='Uz' ? backNoteRUz : user.lang ==='Ru'? backNoteRu : 'none');
     }else {
         await noWrite(msg);
     }
 }
 const noteSec = async (msg) => {
     const chatId = msg.chat.id;
+    const textMsg = msg.text;
     let user = await User.findOne({ chatId }).lean();
-    if (msg.text){
-        alert(text)
+    if (user.action === 'write-note'){
+        user.notification.push({message:textMsg});
+        await User.findByIdAndUpdate(user._id, user, {new: true});
+        await bot.sendMessage(chatId,`${msg.text}`);
+    }else {
+        await noWrite(msg);
+    }
+}
+const allNotes = async (msg) => {
+    const chatId = msg.chat.id;
+    try {
+        const user = await User.findOne({chatId}).lean();
+        if (user.notification && user.notification.length > 0){
+            for (const notification of user.notification){
+                const message =`
+                    ${notification.message || '🤷‍♂️'}
+                    ${new Date(notification.date).toLocaleDateString() || '🤷‍♂️'} ${notification.date ? new Date(user.createDate).toLocaleTimeString() : '🤷‍♂️'}
+                    ⏳  ${notification.notif ? '✅' : 'none'}`
+                await bot.sendMessage(chatId,`📨${message}`,
+            user.lang ==='Uz' ? noteBtnUz : user.lang ==='Ru'? noteBtnRu : 'none');
+            }
+        }else {
+            await bot.sendMessage(chatId, `${user.lang ==='Uz' ? 'Topilmadi' : 'Не найдено'}`);
+        }
+    }catch (err){
+        await bot.sendMessage(chatId,`'🤷‍♂️' Notes: ${err}`);
     }
 }
 
@@ -226,5 +252,5 @@ module.exports = {
   requestLang,
   noWrite,
   Back,
-  toPDF,weather, download, downloadStart, notes, noteSec
+  toPDF,weather, download, downloadStart, notes, noteSec, allNotes
 };

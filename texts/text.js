@@ -26,8 +26,8 @@ const notesText = {
     // enText: " Dear user, for a quick solution to your problem, please write your account number from Plum application."
 }
 const writeNoteText = {
-    uzText: "Eslatma xabarlarni yuboring!",
-    ruText: "Отправляйте напоминания!",
+    uzText: "Eslatma xabarlarni yuboring. Xabaringizni boshidagi so'zlari mavzu sifatida ishlatiladi!",
+    ruText: "Отправляйте напоминания. Слова в начале Вашего сообщения используются в качестве темы!",
     // enText: " Dear user, for a quick solution to your problem, please write your account number from Plum application."
 }
 
