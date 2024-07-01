@@ -83,7 +83,7 @@ module.exports = {
     reply_markup: {
       inline_keyboard: [
         [
-          {text: "O'chirish", callback_data: `delete`},
+          {text: "O'chirish", callback_data: `/delete`},
         ],
       ],
     },
@@ -92,7 +92,7 @@ module.exports = {
     reply_markup: {
       inline_keyboard: [
         [
-          {text: "Удалить", callback_data: `delete`},
+          {text: "Удалить", callback_data: `/delete`},
         ],
       ],
     },

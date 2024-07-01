@@ -161,5 +161,28 @@ const bootstrap = () => {
             }
         }
     })
+    bot.on('callback_query', async (callbackQuery) => {
+        const chatId = callbackQuery.message.chat.id;
+        const messageId = callbackQuery.message.message_id;
+        const data = callbackQuery.data;
+        if (data === '/delete'){
+            try {
+            const user = await User.findOne({ chatId }).lean();
+            if (user){
+                console.log(messageId);
+                console.log(user.notification);
+                const notificationIndex = user.notification.findIndex(notif => notif._id.toString() === id);
+                if (notificationIndex !== -1){
+                    console.log(notificationIndex)
+                }
+            }
+                // await bot.deleteMessage(chatId, messageId);
+                // await bot.answerCallbackQuery(callbackQuery.id, { text: `✅`, show_alert: true });
+            }catch (err){
+                await bot.sendMessage(chatId, `${err}`)
+            }
+        }
+    })
 }
+
 module.exports = {bootstrap};

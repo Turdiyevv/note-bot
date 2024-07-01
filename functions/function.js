@@ -131,9 +131,12 @@ const noteSec = async (msg) => {
     const textMsg = msg.text;
     let user = await User.findOne({ chatId }).lean();
     if (user.action === 'write-note'){
-        user.notification.push({message:textMsg});
+        const newNotification = { message: `#${msg.text}` };
+        user.notification.push({newNotification});
         await User.findByIdAndUpdate(user._id, user, {new: true});
-        await bot.sendMessage(chatId,`${msg.text}`);
+        await bot.sendMessage(chatId,
+            `${user.lang ==='Uz' ? `#${msg.text.substring(0, 10)} - Nomli xabar yaratildi` : 
+                `Создано сообщение с именем - #${msg.text.substring(0, 10)}`}`);
     }else {
         await noWrite(msg);
     }
