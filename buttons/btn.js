@@ -1,4 +1,23 @@
-module.exports = {
+const noteBtnUz =(id) => ({
+  reply_markup: {
+    inline_keyboard: [
+      [
+        {text: "🗑O'chirish", callback_data: `delete_${id}`},
+      ],
+    ],
+  },
+})
+
+const noteBtnRu = (id) => ({
+  reply_markup: {
+    inline_keyboard: [
+      [
+        {text: "🗑Удалить", callback_data: `delete_${id}`},
+      ],
+    ],
+  },
+})
+module.exports = { noteBtnUz, noteBtnRu,
   numberOption: {
     reply_markup: {
       keyboard: [[{ text: "Share contact", request_contact: true }]],
@@ -9,9 +28,9 @@ module.exports = {
     reply_markup: {
       keyboard: [
         [
-          { text: "Uz", callback_data: 0 },
-          { text: "Ru", callback_data: 1 },
-          // {text: "En", callback_data: 2},
+          { text: "Uz"},
+          { text: "Ru"},
+          // {text: "En"},
         ],
       ],
       resize_keyboard: true,
@@ -20,9 +39,13 @@ module.exports = {
   menuOption: {
     reply_markup: {
       keyboard: [
-        [{ text: "📄PDF" }, { text: "🗒Eslatmalar" }],
-        [{ text: "🎞Vidio_yuklash" }, { text: "⛅️Obhavo" }],
-        [{ text: "Orqaga", callback_data: "/cancel" }],
+        [{ text: "🗒Eslatmalar" }],
+        [
+            { text: "📄PDF" },
+            // { text: "🎞Vidio_yuklash" },
+          { text: "⛅️Obhavo" }
+        ],
+        [{ text: "Orqaga" }],
       ],
       resize_keyboard: true,
     },
@@ -30,30 +53,34 @@ module.exports = {
   menuOptionRu: {
     reply_markup: {
       keyboard: [
-        [{ text: "📄PDF" }, { text: "🗒Примечания" }],
-        [{ text: "🎞Скачать_видео" }, { text: "⛅️Погода" }],
-        [{ text: "Назад", callback_data: "/cancel" }],
+        [{ text: "🗒Примечания" }],
+        [
+            { text: "📄PDF" },
+            // { text: "🎞Скачать_видео" },
+          { text: "⛅️Погода" }
+        ],
+        [{ text: "Назад" }],
       ],
       resize_keyboard: true,
     },
   },
   backUz: {
     reply_markup: {
-      keyboard: [[{ text: "Orqaga", callback_data: "/cancel" }]],
+      keyboard: [[{ text: "Orqaga"}]],
       resize_keyboard: true,
     },
   },
   backRu: {
     reply_markup: {
-      keyboard: [[{ text: "Назад", callback_data: "/cancel" }]],
+      keyboard: [[{ text: "Назад"}]],
       resize_keyboard: true,
     },
   },
   backNoteRUz: {
     reply_markup: {
       keyboard: [[
-          { text: "Orqaga", callback_data: "/cancel" },
-          { text: "📜Barchasi", callback_data: "/cancel" }
+          { text: "Orqaga"},
+          { text: "📜Barchasi"}
       ]],
       resize_keyboard: true,
     },
@@ -61,8 +88,8 @@ module.exports = {
   backNoteRu: {
     reply_markup: {
       keyboard: [[
-          { text: "Назад", callback_data: "/cancel" },
-          { text: "📜Все", callback_data: "/cancel" }
+          { text: "Назад"},
+          { text: "📜Все"}
       ]],
       resize_keyboard: true,
     },
@@ -75,24 +102,6 @@ module.exports = {
             text: "PDF",
             url: "https://www.ilovepdf.com",
           },
-        ],
-      ],
-    },
-  },
-  noteBtnUz: {
-    reply_markup: {
-      inline_keyboard: [
-        [
-          {text: "O'chirish", callback_data: `/delete`},
-        ],
-      ],
-    },
-  },
-  noteBtnRu: {
-    reply_markup: {
-      inline_keyboard: [
-        [
-          {text: "Удалить", callback_data: `/delete`},
         ],
       ],
     },

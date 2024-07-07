@@ -7,13 +7,8 @@ const {
   requestContact,
   requestLang,
   Back,
-  toPDF, weather, download, downloadStart, notes, noteSec, allNotes
+  toPDF, weather, download, notes, noteSec, allNotes, callBackDelete
 } = require("../functions/function");
-
-
-const ytdl = require('ytdl-core');
-const ffmpeg = require('fluent-ffmpeg');
-const fs = require('fs');
 
 const bootstrap = () => {
     bot.setMyCommands (
@@ -22,11 +17,18 @@ const bootstrap = () => {
             {command: "/admin", description: 'Only for administrator'},
         ]).then (() =>{} )
 
-//     bot.on('sticker', (msg) => {
-//     const chatId = msg.chat.id;
-//     const stickerFileId = msg.sticker.file_id;
-//     console.log('Stiker file_id:', stickerFileId);
-// });
+    // bot.on('sticker', (msg) => {
+    //     const chatId = msg.chat.id;
+    //     const stickerFileId = msg.sticker.file_id;
+    //     console.log ( 'Stiker file_id:', stickerFileId );
+    // })
+    bot.on('callback_query', async (callbackQuery) => {
+        const data = callbackQuery.data;
+        const chatId = callbackQuery.message.chat.id;
+        if (data.startsWith('delete_')){
+            await callBackDelete(chatId, data);
+        }
+    });
     bot.on('message', async msg => {
         if (msg.chat.type === 'private') {
             const chatId = msg.chat.id;
@@ -87,17 +89,6 @@ const bootstrap = () => {
               if (user && user.phone) {
                 if (user.action === "menu") {
                   await download(msg);
-                } else {
-                  await startSession(msg, user);
-                }
-              } else {
-                await login(msg);
-              }
-            }
-            else if (text && ytdl.validateURL(text)) {
-              if (user && user.phone) {
-                if (user.action === "download") {
-                  await downloadStart(msg);
                 } else {
                   await startSession(msg, user);
                 }
@@ -169,15 +160,15 @@ const bootstrap = () => {
             try {
             const user = await User.findOne({ chatId }).lean();
             if (user){
-                console.log(messageId);
-                console.log(user.notification);
-                const notificationIndex = user.notification.findIndex(notif => notif._id.toString() === id);
-                if (notificationIndex !== -1){
-                    console.log(notificationIndex)
-                }
+                // console.log(messageId);
+                console.log(user);
+                // const notificationIndex = user.notification.findIndex(notif => notif._id.toString() === id);
+                // if (notificationIndex !== -1){
+                //     console.log(notificationIndex)
+                // }
             }
                 // await bot.deleteMessage(chatId, messageId);
-                // await bot.answerCallbackQuery(callbackQuery.id, { text: `✅`, show_alert: true });
+                await bot.answerCallbackQuery(callbackQuery.id, { text: `✅`, show_alert: true });
             }catch (err){
                 await bot.sendMessage(chatId, `${err}`)
             }
