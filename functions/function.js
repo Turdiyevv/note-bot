@@ -157,11 +157,10 @@ const allNotes = async (msg) => {
         if (user.notification && user.notification.length > 0){
             for (const notification of user.notification){
                 const message =`
-                    #${notification.message.trim().split(' ')[0] || '🤷‍♂️'}
                     ${notification.message || '🤷‍♂️'}
                     ${new Date(notification.date).toLocaleDateString() || '🤷‍♂️'} ${notification.date ? new Date(user.createDate).toLocaleTimeString() : '🤷‍♂️'}
                     ⏳  ${notification.notif ? '✅' : 'none'}`
-                const sentMessage = await bot.sendMessage(chatId,`📨${message}`,
+                const sentMessage = await bot.sendMessage(chatId,`📨 #${notification.message.trim().split(' ')[0] || '🤷‍♂️'} ${message}`,
             user.lang ==='Uz' ? noteBtnUz(notification._id) : user.lang ==='Ru'? noteBtnRu(notification._id) : 'none');
                 messageIds.push({ notificationId: notification._id.toString(), messageId: sentMessage.message_id });
             }
@@ -192,7 +191,7 @@ const callBackDelete = async (chatId, data) => {
                 }
                 // await bot.sendMessage(chatId, `${user.lang ==='Uz' ? '✅ O\'chirildi' : '✅ Удалено'}`);
             }else {
-             return bot.sendMessage(chatId, `${user.lang ==='Uz' ? '🛑 Eslatma yo\'q' : '🛑 Нет примечания'}`);
+             return bot.sendMessage(chatId, `${user.lang ==='Uz' ? '🤷‍♂️ Eslatma yo\'q' : '🤷‍♂️ Нет примечания'}`);
             }
         }
     }
