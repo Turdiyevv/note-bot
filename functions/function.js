@@ -145,7 +145,7 @@ const allNotes = async (msg) => {
             try {
                 await bot.deleteMessage(chatId, msg.messageId);
             } catch (err) {
-                await bot.sendMessage(chatId, `old messages ${msg.messageId}: ${err}`);
+                await bot.sendMessage(chatId, `old message: ${msg.messageId}`);
             }
         }
         messageIds = [];
@@ -175,26 +175,26 @@ const callBackDelete = async (chatId, data) => {
      const id = data.split('_')[1];
      const user = await User.findOne({ chatId }).lean();
      if (user && !user.notification || user.notification === 0 || undefined){
-             return bot.sendMessage(chatId, `${user.lang ==='Uz' ? '⚠️ Eslatmalar topilmadi' : '⚠️ Примечания не найдены'}`);
-         }else {
-            const notification = user.notification.find(note => note._id.toString() === id);
-            if (notification){
-                user.notification = user.notification.filter(note => note._id.toString() !== id);
-                await User.findByIdAndUpdate(user._id, user, { new: true });
-                const messageToDelete = messageIds.find(msg => msg.notificationId === id);
-                if (messageToDelete){
-                    try {
-                        await bot.deleteMessage(chatId, messageToDelete.messageId);
-                    }catch (err){
-                        await bot.sendMessage( chatId, `${err}`);
-                    }
+         return bot.sendMessage(chatId, `${user.lang ==='Uz' ? '⚠️ Eslatmalar topilmadi' : '⚠️ Примечания не найдены'}`);
+     }else {
+        const notification = user.notification.find(note => note._id.toString() === id);
+        if (notification){
+            user.notification = user.notification.filter(note => note._id.toString() !== id);
+            await User.findByIdAndUpdate(user._id, user, { new: true });
+            const messageToDelete = messageIds.find(msg => msg.notificationId === id);
+            if (messageToDelete){
+                try {
+                    await bot.deleteMessage(chatId, messageToDelete.messageId);
+                }catch (err){
+                    await bot.sendMessage( chatId, `${'err:', err}`);
                 }
-                // await bot.sendMessage(chatId, `${user.lang ==='Uz' ? '✅ O\'chirildi' : '✅ Удалено'}`);
-            }else {
-             return bot.sendMessage(chatId, `${user.lang ==='Uz' ? '🤷‍♂️ Eslatma yo\'q' : '🤷‍♂️ Нет примечания'}`);
             }
+            // await bot.sendMessage(chatId, `${user.lang ==='Uz' ? '✅ O\'chirildi' : '✅ Удалено'}`);
+        }else {
+         return bot.sendMessage(chatId, `${user.lang ==='Uz' ? '🤷‍♂️ Eslatma yo\'q' : '🤷‍♂️ Нет примечания'}`);
         }
     }
+}
 
 // download
 const download = async (msg) => {
