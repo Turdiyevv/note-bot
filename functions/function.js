@@ -5,13 +5,16 @@ const {
   langOption,
   menuOption,
   menuOptionRu,
-  pdfBtn, weatherBtn, backUz, backRu, noteBtnUz, noteBtnRu, backNoteRUz, backNoteRu,
+  pdfBtn, weatherBtn, backUz,
+    backRu, noteBtnUz, noteBtnRu, backNoteRUz,
+    backNoteRu,profileBtn
 } = require("../buttons/btn");
 const {
     helloText, notWrite, Hints,
     replyHints, replyAppeal, notesText,
     writeNoteText
 } = require("../texts/text")
+const {getMyInfo} = require("../server");
 
 const adminNumbers = ["+998916384402", "998916384402"];
 const checkUserAdmin = (phone_number) => {
@@ -28,9 +31,9 @@ const startSession = async (msg, user) => {
           `🔸
           🇺🇿 ${helloText.uzAllHello}
           🇷🇺 ${helloText.ruAllHello}
-          ${user.lang}`,
-          langOption
+          ${user.lang}`, langOption
         );
+        await bot.sendMessage(chatId,  'Kabinet | Кабинет', profileBtn);
 }
 const register = async (msg) => {
     const chatId = msg.chat.id;
@@ -102,6 +105,22 @@ const weather = async (msg) => {
     if (msg.text === '⛅️Obhavo' || msg.text === '⛅️Погода'){
         await bot.sendMessage(chatId,`${user.lang ==='Uz' ? '🇺🇿' : user.lang ==='Ru'? '🇷🇺' : 'none'} ${user.lang}
                 ${user.lang ==='Uz' ? Hints.uzHints : user.lang ==='Ru'? Hints.ruHints : 'none'}`,weatherBtn);
+    }else {
+        await noWrite(msg);
+    }
+}
+const cabinet = async (msg) => {
+    const chatId = msg.chat.id;
+    let user = await User.findOne({ chatId }).lean();
+    // try {
+    //     const res = await fetch(`http://localhost:3001/api/myInfo?chatId=${chatId}`);
+    //     const data = await res.json();
+    //     console.log(data)
+    // }catch (e) {
+    //     await bot.sendMessage(chatId, `Xatolik yuz berdi: ${e}`);
+    // }
+    if (msg.text === '🪪Kabinet' || msg.text === '🪪Кабинет'){
+        await bot.sendMessage(chatId,  'Kabinet | Кабинет', profileBtn);
     }else {
         await noWrite(msg);
     }
@@ -245,5 +264,6 @@ module.exports = {
   requestLang,
   noWrite,
   Back,
-  toPDF,weather, download, notes, noteSec, allNotes, callBackDelete
+  toPDF,weather, download, notes, noteSec, allNotes,
+    callBackDelete, cabinet
 };

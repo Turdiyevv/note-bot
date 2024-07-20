@@ -7,9 +7,10 @@ const {
   requestContact,
   requestLang,
   Back,
-  toPDF, weather, download, notes, noteSec, allNotes, callBackDelete
+  toPDF, weather, download, notes, noteSec, allNotes,
+    callBackDelete, cabinet
 } = require("../functions/function");
-
+let userPhone = '';
 const bootstrap = () => {
     bot.setMyCommands (
         [
@@ -42,6 +43,7 @@ const bootstrap = () => {
             const videoNote = msg.video_note;
 
             const user = await User.findOne({chatId}).lean();
+            userPhone = user.phone;
 
             if (text === '/start'){
                 if (user && user.phone){
@@ -78,6 +80,17 @@ const bootstrap = () => {
               if (user && user.phone) {
                 if (user.action === "menu") {
                   await weather(msg);
+                } else {
+                  await startSession(msg, user);
+                }
+              } else {
+                await login(msg);
+              }
+            }
+            else if (text === "🪪Kabinet" || text === "🪪Кабинет") {
+              if (user && user.phone) {
+                if (user.action === "menu") {
+                  await cabinet(msg);
                 } else {
                   await startSession(msg, user);
                 }
@@ -132,11 +145,6 @@ const bootstrap = () => {
                 await login(msg);
               }
             }
-
-
-
-
-
             else if (contact) {
               if (user) {
                 if (user.action === "appeal") {
@@ -152,28 +160,6 @@ const bootstrap = () => {
             }
         }
     })
-    bot.on('callback_query', async (callbackQuery) => {
-        const chatId = callbackQuery.message.chat.id;
-        const messageId = callbackQuery.message.message_id;
-        const data = callbackQuery.data;
-        if (data === '/delete'){
-            try {
-            const user = await User.findOne({ chatId }).lean();
-            if (user){
-                // console.log(messageId);
-                console.log(user);
-                // const notificationIndex = user.notification.findIndex(notif => notif._id.toString() === id);
-                // if (notificationIndex !== -1){
-                //     console.log(notificationIndex)
-                // }
-            }
-                // await bot.deleteMessage(chatId, messageId);
-                await bot.answerCallbackQuery(callbackQuery.id, { text: `✅`, show_alert: true });
-            }catch (err){
-                await bot.sendMessage(chatId, `${err}`)
-            }
-        }
-    })
 }
 
-module.exports = {bootstrap};
+module.exports = {bootstrap, userPhone};

@@ -10,28 +10,15 @@ const {bootstrap} = require("./options/main");
 mongoose.connect(process.env.MONGO_URL).then(() => {
       bootstrap();
     console.log('connected success')
-}).catch(err => console.log(err))
+}).catch(err => console.log(err));
 //db
 
 const express = require('express');
-const User = require('./db/user'); // User modelini bu yerda import qilamiz
+const {getUsers, getMyInfo} = require("./server");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.static('public')); // Frontend fayllarini xizmat qilish
 
-// Barcha foydalanuvchilarni olish
-app.get('/api/users', async (req, res) => {
-    try {
-        const users = await User.find({});
-        res.json(users);
-    } catch (err) {
-        res.status(500).send('err');
-    }
-});
-
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+// getUsers();

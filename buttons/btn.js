@@ -41,8 +41,8 @@ module.exports = { noteBtnUz, noteBtnRu,
       keyboard: [
         [{ text: "🗒Eslatmalar" }],
         [
-            { text: "📄PDF" },
-            // { text: "🎞Vidio_yuklash" },
+          { text: "📄PDF" },
+          { text: "🪪Kabinet" },
           { text: "⛅️Obhavo" }
         ],
         [{ text: "Orqaga" }],
@@ -55,8 +55,8 @@ module.exports = { noteBtnUz, noteBtnRu,
       keyboard: [
         [{ text: "🗒Примечания" }],
         [
-            { text: "📄PDF" },
-            // { text: "🎞Скачать_видео" },
+           { text: "📄PDF" },
+          { text: "🪪Кабинет" },
           { text: "⛅️Погода" }
         ],
         [{ text: "Назад" }],
@@ -92,6 +92,18 @@ module.exports = { noteBtnUz, noteBtnRu,
           { text: "📜Все"}
       ]],
       resize_keyboard: true,
+    },
+  },
+  profileBtn: {
+    reply_markup: {
+      inline_keyboard: [
+        [
+          {
+            text: "My profile",
+            web_app: {url: "https://nuxe-note.vercel.app"},
+          },
+        ],
+      ],
     },
   },
   pdfBtn: {
