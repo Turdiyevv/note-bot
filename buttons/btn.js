@@ -100,7 +100,7 @@ module.exports = { noteBtnUz, noteBtnRu,
         [
           {
             text: "My profile",
-            web_app: {url: "https://nuxe-note.vercel.app"},
+            web_app: {url: `https://nuxe-note.vercel.app`},
           },
         ],
       ],

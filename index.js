@@ -7,6 +7,7 @@ module.exports = {bot, TelegramBot};
 //db
 const mongoose = require("mongoose");
 const {bootstrap} = require("./options/main");
+
 mongoose.connect(process.env.MONGO_URL).then(() => {
       bootstrap();
     console.log('connected success')
@@ -14,11 +15,11 @@ mongoose.connect(process.env.MONGO_URL).then(() => {
 //db
 
 const express = require('express');
-const {getUsers, getMyInfo} = require("./server");
+const {getUsers} = require("./server");
 
 const app = express();
 
 app.use(express.json());
 app.use(express.static('public')); // Frontend fayllarini xizmat qilish
 
-// getUsers();
+getUsers();

@@ -10,6 +10,9 @@ const {
   toPDF, weather, download, notes, noteSec, allNotes,
     callBackDelete, cabinet
 } = require("../functions/function");
+const {getMyInfo} = require("../server");
+const axios = require('axios');
+
 let userPhone = '';
 const bootstrap = () => {
     bot.setMyCommands (
@@ -18,11 +21,16 @@ const bootstrap = () => {
             {command: "/admin", description: 'Only for administrator'},
         ]).then (() =>{} )
 
-    // bot.on('sticker', (msg) => {
-    //     const chatId = msg.chat.id;
-    //     const stickerFileId = msg.sticker.file_id;
-    //     console.log ( 'Stiker file_id:', stickerFileId );
-    // })
+
+    async function getMyInfo(phone) {
+        try {
+            const response = await axios.post('http://localhost:3001/api/userByPhone', { phone });
+            return response.data;
+        } catch (err) {
+            console.error('Error: ' + err.message);
+            return null;
+        }
+    }
     bot.on('callback_query', async (callbackQuery) => {
         const data = callbackQuery.data;
         const chatId = callbackQuery.message.chat.id;
@@ -90,6 +98,12 @@ const bootstrap = () => {
             else if (text === "🪪Kabinet" || text === "🪪Кабинет") {
               if (user && user.phone) {
                 if (user.action === "menu") {
+                    const userInfo = await getMyInfo(user.phone);
+                    if (userInfo) {
+                        await bot.sendMessage(chatId, `Your profile info: ${JSON.stringify(userInfo)}`);
+                    } else {
+                        await bot.sendMessage(chatId, `User info not found.`);
+                    }
                   await cabinet(msg);
                 } else {
                   await startSession(msg, user);

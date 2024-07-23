@@ -13,8 +13,7 @@ const {
     helloText, notWrite, Hints,
     replyHints, replyAppeal, notesText,
     writeNoteText
-} = require("../texts/text")
-const {getMyInfo} = require("../server");
+} = require("../texts/text");
 
 const adminNumbers = ["+998916384402", "998916384402"];
 const checkUserAdmin = (phone_number) => {
@@ -33,7 +32,7 @@ const startSession = async (msg, user) => {
           🇷🇺 ${helloText.ruAllHello}
           ${user.lang}`, langOption
         );
-        await bot.sendMessage(chatId,  'Kabinet | Кабинет', profileBtn);
+        await bot.sendMessage(chatId,  'Kabinet | Кабинет', profileBtn(user.phone));
 }
 const register = async (msg) => {
     const chatId = msg.chat.id;
