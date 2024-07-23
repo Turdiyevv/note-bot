@@ -1,9 +1,11 @@
 const express = require('express');
-const User = require('./db/user'); // User modelini bu yerda import qilamiz
+const User = require('./db/user');
+const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(cors());
 app.use(express.json());
 
 // user info
@@ -23,7 +25,6 @@ function getUsers() {
         try {
             const users = await User.find({});
             res.json(users);
-            console.log(users)
         } catch (err) {
             res.status(500).send(`${err}`);
         }

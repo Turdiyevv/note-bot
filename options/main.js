@@ -24,8 +24,8 @@ const bootstrap = () => {
 
     async function getMyInfo(phone) {
         try {
-            const response = await axios.post('http://localhost:3001/api/userByPhone', { phone });
-            return response.data;
+            const res = await axios.post('http://localhost:3001/api/userByPhone', { phone });
+            return res.data;
         } catch (err) {
             console.error('Error: ' + err.message);
             return null;
