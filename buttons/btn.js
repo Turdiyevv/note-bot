@@ -17,7 +17,16 @@ const noteBtnRu = (id) => ({
     ],
   },
 })
-module.exports = { noteBtnUz, noteBtnRu,
+const cabinetku = (phone) => ({
+  reply_markup: {
+    inline_keyboard: [
+      [
+        {text: "My_profile",web_app: {url: `https://nuxe-note.vercel.app?phone=${phone}`}},
+      ],
+    ],
+  },
+})
+module.exports = { noteBtnUz, noteBtnRu, cabinetku,
   numberOption: {
     reply_markup: {
       keyboard: [[{ text: "Share contact", request_contact: true }]],

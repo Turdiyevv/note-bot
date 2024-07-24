@@ -10,8 +10,6 @@ const {
   toPDF, weather, download, notes, noteSec, allNotes,
     callBackDelete, cabinet
 } = require("../functions/function");
-const {getMyInfo} = require("../server");
-const axios = require('axios');
 
 let userPhone = '';
 const bootstrap = () => {
@@ -20,22 +18,14 @@ const bootstrap = () => {
             {command: "/start", description: 'Start chat'},
             {command: "/admin", description: 'Only for administrator'},
         ]).then (() =>{} )
-
-
-    async function getMyInfo(phone) {
-        try {
-            const res = await axios.post('http://localhost:3001/api/userByPhone', { phone });
-            return res.data;
-        } catch (err) {
-            console.error('Error: ' + err.message);
-            return null;
-        }
-    }
     bot.on('callback_query', async (callbackQuery) => {
         const data = callbackQuery.data;
         const chatId = callbackQuery.message.chat.id;
         if (data.startsWith('delete_')){
             await callBackDelete(chatId, data);
+        }
+        if ('My_profile'){
+            console.log('query')
         }
     });
     bot.on('message', async msg => {
@@ -98,12 +88,6 @@ const bootstrap = () => {
             else if (text === "🪪Kabinet" || text === "🪪Кабинет") {
               if (user && user.phone) {
                 if (user.action === "menu") {
-                    const userInfo = await getMyInfo(user.phone);
-                    if (userInfo) {
-                        await bot.sendMessage(chatId, `Your profile info: ${JSON.stringify(userInfo)}`);
-                    } else {
-                        await bot.sendMessage(chatId, `User info not found.`);
-                    }
                   await cabinet(msg);
                 } else {
                   await startSession(msg, user);

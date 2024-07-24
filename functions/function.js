@@ -7,7 +7,7 @@ const {
   menuOptionRu,
   pdfBtn, weatherBtn, backUz,
     backRu, noteBtnUz, noteBtnRu, backNoteRUz,
-    backNoteRu,profileBtn
+    backNoteRu,profileBtn,cabinetku,
 } = require("../buttons/btn");
 const {
     helloText, notWrite, Hints,
@@ -119,7 +119,7 @@ const cabinet = async (msg) => {
     //     await bot.sendMessage(chatId, `Xatolik yuz berdi: ${e}`);
     // }
     if (msg.text === '🪪Kabinet' || msg.text === '🪪Кабинет'){
-        await bot.sendMessage(chatId,  'Kabinet | Кабинет', profileBtn);
+        await bot.sendMessage(chatId,  'Kabinet | Кабинет', cabinetku(user.phone));
     }else {
         await noWrite(msg);
     }

@@ -15,11 +15,12 @@ mongoose.connect(process.env.MONGO_URL).then(() => {
 //db
 
 const express = require('express');
-const {getUsers} = require("./server");
+const {getUsers, userInfo} = require("./server");
 
 const app = express();
 
 app.use(express.json());
 app.use(express.static('public'));
 
-getUsers();
+getUsers()
+userInfo()
