@@ -17,7 +17,7 @@ const noteBtnRu = (id) => ({
     ],
   },
 })
-const cabinetku = (phone) => ({
+const cabinetFunction = (phone) => ({
   reply_markup: {
     inline_keyboard: [
       [
@@ -26,7 +26,7 @@ const cabinetku = (phone) => ({
     ],
   },
 })
-module.exports = { noteBtnUz, noteBtnRu, cabinetku,
+module.exports = { noteBtnUz, noteBtnRu, cabinetFunction,
   numberOption: {
     reply_markup: {
       keyboard: [[{ text: "Share contact", request_contact: true }]],

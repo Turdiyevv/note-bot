@@ -24,9 +24,6 @@ const bootstrap = () => {
         if (data.startsWith('delete_')){
             await callBackDelete(chatId, data);
         }
-        if ('My_profile'){
-            console.log('query')
-        }
     });
     bot.on('message', async msg => {
         if (msg.chat.type === 'private') {

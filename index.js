@@ -1,8 +1,10 @@
 const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
+const cors = require('cors');
 const TOKEN = process.env.TOKEN;
 const bot = new TelegramBot(TOKEN, {polling: true});
 module.exports = {bot, TelegramBot};
+
 
 //db
 const mongoose = require("mongoose");
