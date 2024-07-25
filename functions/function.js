@@ -7,7 +7,7 @@ const {
   menuOptionRu,
   pdfBtn, weatherBtn, backUz,
     backRu, noteBtnUz, noteBtnRu, backNoteRUz,
-    backNoteRu,profileBtn,cabinetFunction,
+    backNoteRu,cabinetFunction,
 } = require("../buttons/btn");
 const {
     helloText, notWrite, Hints,
@@ -32,7 +32,7 @@ const startSession = async (msg, user) => {
           🇷🇺 ${helloText.ruAllHello}
           ${user.lang}`, langOption
         );
-        await bot.sendMessage(chatId,  'Kabinet | Кабинет', profileBtn(user.phone));
+        await bot.sendMessage(chatId,  'Kabinet | Кабинет', cabinetFunction(user.phone));
 }
 const register = async (msg) => {
     const chatId = msg.chat.id;

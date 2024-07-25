@@ -11,7 +11,6 @@ const {
     callBackDelete, cabinet
 } = require("../functions/function");
 
-let userPhone = '';
 const bootstrap = () => {
     bot.setMyCommands (
         [
@@ -38,7 +37,6 @@ const bootstrap = () => {
             const videoNote = msg.video_note;
 
             const user = await User.findOne({chatId}).lean();
-            userPhone = user.phone;
 
             if (text === '/start'){
                 if (user && user.phone){
@@ -157,4 +155,4 @@ const bootstrap = () => {
     })
 }
 
-module.exports = {bootstrap, userPhone};
+module.exports = {bootstrap};

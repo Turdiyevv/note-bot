@@ -15,11 +15,14 @@ app.listen(PORT, () => {
 // user info
 function userInfo(){
     app.post('/api/userByPhone', async (req, res) => {
-    const { phone } = req.body;
+    let { phone } = req.body;
+    if (!phone) {
+        return res.status(400).json({ message: 'Noto\'g\'ri telefon raqami' });
+    }
     try {
         let user = await User.findOne({ phone }).lean();
-        alert(user);
-        if (!user && !phone.startWith('+')) {
+        if (!user && !String(phone).startsWith('+')) {
+            phone = String(+phone)
             user = await User.findOne({ phone: `+${phone}` }).lean();
             if (!user) return res.status(404).json({message: 'User not found'});
             return res.json(user);

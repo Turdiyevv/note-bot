@@ -103,18 +103,18 @@ module.exports = { noteBtnUz, noteBtnRu, cabinetFunction,
       resize_keyboard: true,
     },
   },
-  profileBtn: {
-    reply_markup: {
-      inline_keyboard: [
-        [
-          {
-            text: "My profile",
-            web_app: {url: `https://nuxe-note.vercel.app`},
-          },
-        ],
-      ],
-    },
-  },
+  // profileBtn: {
+  //   reply_markup: {
+  //     inline_keyboard: [
+  //       [
+  //         {
+  //           text: "My profile",
+  //           web_app: {url: `https://nuxe-note.vercel.app`},
+  //         },
+  //       ],
+  //     ],
+  //   },
+  // },
   pdfBtn: {
     reply_markup: {
       inline_keyboard: [
