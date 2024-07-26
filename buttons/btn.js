@@ -11,22 +11,35 @@ const noteBtnUz =(id) => ({
 const noteBtnRu = (id) => ({
   reply_markup: {
     inline_keyboard: [
-      [
-        {text: "🗑Удалить", callback_data: `delete_${id}`},
-      ],
+      [{text: "🗑Удалить", callback_data: `delete_${id}`},],
     ],
   },
 })
 const cabinetFunction = (phone) => ({
   reply_markup: {
-    inline_keyboard: [
+    keyboard: [
       [
-        {text: "My_profile",web_app: {url: `https://nuxe-note.vercel.app?phone=${phone}`}},
+          {text: "🪪Kabinet",web_app: {url: `https://nuxe-note.vercel.app`}},
+          { text: "🗒Eslatmalar" },
       ],
+      [{ text: "Orqaga" }],
     ],
+    resize_keyboard: true,
   },
 })
-module.exports = { noteBtnUz, noteBtnRu, cabinetFunction,
+const cabinetFunctionRu = (phone) => ({
+  reply_markup: {
+    keyboard: [
+      [
+          {text: "🪪Кабинет",web_app: {url: `https://nuxe-note.vercel.app?phone=${phone}`}},
+          { text: "🗒Примечания" },
+      ],
+      [{ text: "Назад" }],
+    ],
+    resize_keyboard: true,
+  },
+})
+module.exports = { noteBtnUz, noteBtnRu, cabinetFunction, cabinetFunctionRu,
   numberOption: {
     reply_markup: {
       keyboard: [[{ text: "Share contact", request_contact: true }]],
@@ -39,57 +52,16 @@ module.exports = { noteBtnUz, noteBtnRu, cabinetFunction,
         [
           { text: "Uz"},
           { text: "Ru"},
-          // {text: "En"},
         ],
       ],
-      resize_keyboard: true,
-    },
-  },
-  menuOption: {
-    reply_markup: {
-      keyboard: [
-        [{ text: "🗒Eslatmalar" }],
-        [
-          { text: "📄PDF" },
-          { text: "🪪Kabinet" },
-          { text: "⛅️Obhavo" }
-        ],
-        [{ text: "Orqaga" }],
-      ],
-      resize_keyboard: true,
-    },
-  },
-  menuOptionRu: {
-    reply_markup: {
-      keyboard: [
-        [{ text: "🗒Примечания" }],
-        [
-           { text: "📄PDF" },
-          { text: "🪪Кабинет" },
-          { text: "⛅️Погода" }
-        ],
-        [{ text: "Назад" }],
-      ],
-      resize_keyboard: true,
-    },
-  },
-  backUz: {
-    reply_markup: {
-      keyboard: [[{ text: "Orqaga"}]],
-      resize_keyboard: true,
-    },
-  },
-  backRu: {
-    reply_markup: {
-      keyboard: [[{ text: "Назад"}]],
       resize_keyboard: true,
     },
   },
   backNoteRUz: {
     reply_markup: {
       keyboard: [[
+          { text: "📜Barchasi"},
           { text: "Orqaga"},
-          { text: "📜Barchasi"}
       ]],
       resize_keyboard: true,
     },
@@ -97,46 +69,10 @@ module.exports = { noteBtnUz, noteBtnRu, cabinetFunction,
   backNoteRu: {
     reply_markup: {
       keyboard: [[
+          { text: "📜Все"},
           { text: "Назад"},
-          { text: "📜Все"}
       ]],
       resize_keyboard: true,
-    },
-  },
-  // profileBtn: {
-  //   reply_markup: {
-  //     inline_keyboard: [
-  //       [
-  //         {
-  //           text: "My profile",
-  //           web_app: {url: `https://nuxe-note.vercel.app`},
-  //         },
-  //       ],
-  //     ],
-  //   },
-  // },
-  pdfBtn: {
-    reply_markup: {
-      inline_keyboard: [
-        [
-          {
-            text: "PDF",
-            url: "https://www.ilovepdf.com",
-          },
-        ],
-      ],
-    },
-  },
-  weatherBtn: {
-    reply_markup: {
-      inline_keyboard: [
-        [
-          {
-            text: "Weather",
-            web_app: {url: "https://ob-havo-yakkabog.netlify.app/"},
-          },
-        ],
-      ],
     },
   },
 };

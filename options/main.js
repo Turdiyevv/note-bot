@@ -6,9 +6,8 @@ const {
   login,
   requestContact,
   requestLang,
-  Back,
-  toPDF, weather, download, notes, noteSec, allNotes,
-    callBackDelete, cabinet
+  Back, notes, noteSec, allNotes,
+    callBackDelete, noWrite
 } = require("../functions/function");
 
 const bootstrap = () => {
@@ -55,50 +54,7 @@ const bootstrap = () => {
                   await startSession(msg, user);
                 }
               } else {
-                await login(msg);
-              }
-            }
-            else if (text === "📄PDF") {
-              if (user && user.phone) {
-                if (user.action === "menu") {
-                  await toPDF(msg);
-                } else {
-                  await startSession(msg, user);
-                }
-              } else {
-                await login(msg);
-              }
-            }
-            else if (text === "⛅️Obhavo" || text === "⛅️Погода") {
-              if (user && user.phone) {
-                if (user.action === "menu") {
-                  await weather(msg);
-                } else {
-                  await startSession(msg, user);
-                }
-              } else {
-                await login(msg);
-              }
-            }
-            else if (text === "🪪Kabinet" || text === "🪪Кабинет") {
-              if (user && user.phone) {
-                if (user.action === "menu") {
-                  await cabinet(msg);
-                } else {
-                  await startSession(msg, user);
-                }
-              } else {
-                await login(msg);
-              }
-            }
-            else if (text === "🎞Vidio_yuklash" || text === "🎞Скачать_видео") {
-              if (user && user.phone) {
-                if (user.action === "menu") {
-                  await download(msg);
-                } else {
-                  await startSession(msg, user);
-                }
-              } else {
+                  await noWrite()
                 await login(msg);
               }
             }
@@ -141,7 +97,6 @@ const bootstrap = () => {
             else if (contact) {
               if (user) {
                 if (user.action === "appeal") {
-                  await sendContact(msg, contact);
                 } else if (user.action === "request_contact" && !user.phone) {
                   return requestContact(msg);
                 } else {
