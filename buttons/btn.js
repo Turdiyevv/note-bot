@@ -19,7 +19,7 @@ const cabinetFunction = (phone) => ({
   reply_markup: {
     keyboard: [
       [
-          {text: "🪪Kabinet",web_app: {url: `https://nuxe-note.vercel.app`}},
+          {text: "🪪Kabinet",web_app: {url: `https://nuxe-note.vercel.app?phone=${phone}`}},
           { text: "🗒Eslatmalar" },
       ],
       [{ text: "Orqaga" }],
